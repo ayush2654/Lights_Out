@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <title> Javascript Practice </title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<style>
+.jumbotron
+{
+  background-image: url("body.jpeg");
+  background-position: center;
+}
+
+</style>
+</head>
+<body onclick="printid(this.id);" background="body3.jpeg">
+  <div class="container">
+    <div class="jumbotron" id="jumbo" style="height:400px;">
+      <h1 style="text-align:center; color:blue; font-size;300px; color:black;"> <b>Lights Out Game </b></h1>
+    </div>
+  </div>
+
+<br></br>
+
+  <div class="container">
+    <h1 style="text-align:center; color:white;"><b>Enjoy The Game </b><h1>
+    <br></br>
+    <div class="row">
+      <div class="col-lg-3"> <button class="btn btn-success btn btn-lg" style="margin-left:100px;" onclick="start()"> Start : </button> </div>
+      <div class="col-lg-3"> <p id="timer" style="color:white;"> 0 </p></div>
+       <div class="col-lg-3" > <p id="moves" style="color:white;"> <b>Moves :</b> </p> </div>
+    </div>
+  </div>
+
+<br></br>
+
+<div class="container" id="game" >
+</div>
+<br></br><br></br>
+</body>
+
+  <script>
+    $(document).ready(function()
+    {
+      for(var i=0;i<100;i++)
+      {
+          $(".jumbotron").fadeOut(1);
+          $(".jumbotron").fadeIn(1000);
+      }
+    });
+  </script>
+
+
+  <script>
+
+var timerInterval = null;
+
+  function changeValue() {
+    document.getElementById("timer").innerHTML = ++value;
+  }
+
+  function start() {
+    clearInterval(timerInterval);
+    value = 0;
+    timerInterval = setInterval(changeValue, 1000);
+  }
+
+</script>
+
+
+
+  <script>
+  var n;
+  var moves=0;
+  var flag=[];
+    $(document).ready(function(){
+      n=prompt("Please Enter the size of your grid",3);
+    for(var j=0;j<n;j++)
+    {
+      for(var i=0;i<n;i++)
+       {
+         if((Math.floor((Math.random()*100)+1))%2)
+            {
+            flag[i+n*j]=1;
+            $('<img src=glow.png style="height:100px;" id=box'+(i+n*j)+'></img>').appendTo('#game');
+            }
+         else
+         {
+              flag[i+n*j]=0;
+              $('<img src=off.jpg style="height:100px;" id=box'+(i+n*j)+'></img>').appendTo('#game');
+         }
+         $('#box'+(i+n*j)+'').css("border","1px solid white");
+       }
+       $('<div></div>').appendTo('#game');
+     }
+
+     $("#game").attr("align","center");
+
+    });
+
+    function printid(e)
+    {
+
+      var l=[]
+      var i=0;
+      e =e || window.event;
+      e =e.target || e.srcElement;
+      for(i=0;i<n*n;i++)
+         {
+           l[i]="box"+i;
+           if(l[i]==e.id)
+             {
+               $('#box'+i+'').hide();
+               if(flag[i]==1)
+                $('#box'+i+'').attr('src',"off.jpg");
+               else
+                $('#box'+i+'').attr('src',"glow.png");
+
+               $('#box'+i+'').fadeIn();
+               flag[i]^=1;
+               n=parseInt(n);
+
+                 if(i+n<n*n)
+                 {
+                   $('#box'+(i+n)+'').hide();
+                    if(flag[i+n]==1)
+                     $('#box'+(i+n)+'').attr('src',"off.jpg");
+                    else
+                      $('#box'+(i+n)+'').attr('src',"glow.png");
+                      $('#box'+(i+n)+'').fadeIn();
+                    flag[i+n]^=1;
+                 }
+                 if(i>=n)
+                 {
+                   $('#box'+(i-n)+'').hide();
+                   if(flag[i-n]==1)
+                   $('#box'+(i-n)+'').attr('src',"off.jpg");
+                  else
+                    $('#box'+(i-n)+'').attr('src',"glow.png");
+                    $('#box'+(i-n)+'').fadeIn();
+                  flag[i-n]^=1;
+                 }
+                 if(i%n!=0)
+                 {
+                   $('#box'+(i-1)+'').hide();
+                   if(flag[i-1]==1)
+                   $('#box'+(i-1)+'').attr('src',"off.jpg");
+                  else
+                    $('#box'+(i-1)+'').attr('src',"glow.png");
+                    $('#box'+(i-1)+'').fadeIn();
+                  flag[i-1]^=1;
+                 }
+                 if((i+1)%n!=0)
+                 {
+                   $('#box'+(i+1)+'').hide(1);
+                   if(flag[i+1]==1)
+                   $('#box'+(i+1)+'').attr('src',"off.jpg");
+                  else
+                    $('#box'+(i+1)+'').attr('src',"glow.png");
+                    $('#box'+(i+1)+'').fadeIn();
+                  flag[i+1]^=1;
+                 }
+               moves++;
+               document.getElementById("moves").innerHTML = "Moves : " + moves;
+               break;
+             }
+         }
+        var black=1;
+        for(i=0;i<n*n;i++)
+          if(flag[i]==1)
+            black=0;
+        if(black==1)alert("congratulations you just formed all off bulbs");
+
+        var white=1;
+        for(i=0;i<n*n;i++)
+          if(flag[i]==0)
+            white=0;
+        if(white==1)alert("congratulations you just formed all glowing bulbs");
+    }
+  </script>
+</html>
